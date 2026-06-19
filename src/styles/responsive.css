@@ -1,0 +1,288 @@
+@media (max-width: 1080px) {
+  .home-nav-links {
+    display: none;
+  }
+
+  .mobile-nav-button {
+    display: inline-flex;
+  }
+
+  .home-hero {
+    min-height: 92svh;
+    padding-top: 112px;
+  }
+
+  .hero-fact-strip,
+  .split-intro,
+  .story-stop,
+  .threat-theatre,
+  .pledge-stage,
+  .expert-panel,
+  .shelly-section {
+    grid-template-columns: 1fr;
+  }
+
+  .story-stop:nth-child(even) figure,
+  .expert-panel blockquote {
+    order: initial;
+    grid-column: auto;
+  }
+
+  .pledge-meter {
+    position: relative;
+    top: auto;
+    grid-template-columns: auto minmax(160px, 1fr);
+    align-items: center;
+  }
+
+  .pledge-meter p {
+    grid-column: 2;
+  }
+
+  .threat-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .shelly-chat-container {
+    width: min(620px, 100%);
+  }
+
+  .impact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .home-nav {
+    top: 12px;
+    width: calc(100% - 24px);
+    border-radius: 24px;
+  }
+
+  .home-brand {
+    letter-spacing: 0.06em;
+  }
+
+  .home-hero {
+    min-height: 100svh;
+    padding: 104px 18px 30px;
+  }
+
+  .hero-content {
+    padding-bottom: 22px;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.35rem, 10.8vw, 3.85rem);
+    line-height: 1.02;
+    letter-spacing: -0.048em;
+  }
+
+  .hero-actions,
+  .prompt-bank {
+    display: grid;
+  }
+
+  .primary-ocean-button,
+  .glass-ocean-button,
+  .prompt-bank button {
+    width: 100%;
+  }
+
+  .hero-fact-strip {
+    border-radius: 8px;
+  }
+
+  .hero-fact-strip span {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .story-section,
+  .threats-section,
+  .actions-section,
+  .expert-section,
+  .shelly-section {
+    padding: 76px 18px;
+  }
+
+  .mission-section {
+    width: calc(100% - 36px);
+    margin-top: 76px;
+  }
+
+  .impact-section {
+    padding-inline: 18px;
+  }
+
+  .campaign-section {
+    min-height: 620px;
+    margin-inline: 18px;
+    padding: 24px;
+    border-radius: 8px;
+  }
+
+  .section-intro {
+    margin-bottom: 34px;
+  }
+
+  .section-intro h2,
+  .expert-panel h2,
+  .shelly-copy h2,
+  .campaign-content h2 {
+    font-size: clamp(2rem, 10vw, 3.65rem);
+    line-height: 1.02;
+  }
+
+  .story-stop figure,
+  .threat-image {
+    min-height: 380px;
+    border-radius: 8px;
+  }
+
+  .story-copy {
+    min-height: auto;
+    border-radius: 8px;
+  }
+
+  .story-copy h3 {
+    font-size: clamp(1.8rem, 8vw, 3rem);
+  }
+
+  .threat-image figcaption {
+    right: 14px;
+    bottom: 14px;
+    left: 14px;
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .threat-image h3 {
+    font-size: clamp(2rem, 10vw, 3.9rem);
+  }
+
+  .threat-selector button,
+  .action-choice {
+    min-height: auto;
+    padding: 18px;
+    border-radius: 8px;
+  }
+
+  .threat-selector button:hover,
+  .threat-selector button:focus-visible,
+  .threat-selector button.is-active {
+    transform: translateY(-2px);
+  }
+
+  .action-backdrop,
+  .expert-panel {
+    padding: 24px;
+    border-radius: 8px;
+  }
+
+  .pledge-meter {
+    grid-template-columns: 1fr;
+  }
+
+  .pledge-meter p {
+    grid-column: auto;
+  }
+
+  .action-choice {
+    grid-template-columns: 1fr auto;
+  }
+
+  .action-choice > svg {
+    display: none;
+  }
+
+  .shelly-chat-container {
+    min-height: 500px;
+    border-radius: 8px;
+  }
+
+  .chat-thread {
+    padding: 18px;
+  }
+
+  .chat-bubble {
+    max-width: 92%;
+  }
+
+  .home-footer {
+    width: calc(100% - 36px);
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-brand span:last-child {
+    display: none;
+  }
+
+  .mobile-nav-panel {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .hero-content p:not(.section-kicker),
+  .section-intro p:not(.section-kicker),
+  .shelly-copy p,
+  .campaign-content p {
+    font-size: 1rem;
+  }
+
+  .story-section,
+  .threats-section,
+  .actions-section,
+  .expert-section,
+  .shelly-section {
+    padding-inline: 14px;
+  }
+
+  .mission-section {
+    width: calc(100% - 28px);
+  }
+
+  .impact-section {
+    padding-inline: 14px;
+  }
+
+  .impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .story-stop,
+  .threat-theatre,
+  .pledge-stage,
+  .shelly-section {
+    gap: 18px;
+  }
+
+  .story-stop figure,
+  .threat-image {
+    min-height: 330px;
+  }
+
+  .threat-selector button {
+    grid-template-columns: 1fr;
+  }
+
+  .pledge-meter span {
+    font-size: 3rem;
+  }
+
+  .shelly-chat-container header,
+  .chat-thread {
+    padding: 16px;
+  }
+
+  .chat-input {
+    margin: 0 14px 14px;
+  }
+
+  .campaign-section {
+    margin-inline: 14px;
+  }
+}
