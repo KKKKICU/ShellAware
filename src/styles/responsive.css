@@ -197,7 +197,7 @@
   }
 
   .shelly-chat-container {
-    min-height: 500px;
+    height: 500px;
     border-radius: 8px;
   }
 
