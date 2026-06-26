@@ -959,8 +959,10 @@
 }
 
 .shelly-chat-container {
+  position: relative;
+  z-index: 0;
   display: flex;
-  min-height: 470px;
+  height: 470px;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(191, 255, 248, 0.19);
@@ -972,10 +974,14 @@
 }
 
 .shelly-chat-container header {
+  position: relative;
+  z-index: 1;
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 14px;
   padding: 20px;
+  background: rgba(1, 10, 18, 0.88);
   border-bottom: 1px solid rgba(191, 255, 248, 0.14);
 }
 
@@ -1005,9 +1011,35 @@
 .chat-thread {
   display: flex;
   flex: 1;
+  min-height: 0;
   flex-direction: column;
   gap: 16px;
   padding: 22px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--aqua) rgba(1, 10, 18, 0.6);
+}
+
+.chat-thread::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-thread::-webkit-scrollbar-track {
+  background: rgba(1, 10, 18, 0.6);
+  border-radius: 999px;
+}
+
+.chat-thread::-webkit-scrollbar-thumb {
+  background-color: var(--aqua);
+  background-clip: content-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+.chat-thread::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .chat-bubble {
@@ -1032,6 +1064,7 @@
 
 .chat-input {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
@@ -1043,9 +1076,42 @@
   background: rgba(255, 255, 255, 0.07);
 }
 
+.chat-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  color: rgba(242, 255, 252, 0.86);
+  background: transparent;
+  font: inherit;
+}
+
+.chat-input input::placeholder {
+  color: rgba(242, 255, 252, 0.58);
+}
+
+.chat-input button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border: none;
+  color: var(--aqua);
+  background: transparent;
+  cursor: pointer;
+}
+
+.chat-input button:disabled {
+  color: rgba(242, 255, 252, 0.3);
+  cursor: not-allowed;
+}
+
 .chat-input svg {
   flex: 0 0 auto;
   color: var(--aqua);
+}
+
+.prompt-bank button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .campaign-section {

@@ -8,7 +8,7 @@ import {
   Waves,
   X
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   actions,
   expertInsight,
@@ -18,6 +18,13 @@ import {
   shellyPrompts,
   threats
 } from "../data/campaignSiteData";
+import { askShelly } from "../lib/shellyClient";
+
+let shellyMessageId = 0;
+const nextShellyMessageId = () => {
+  shellyMessageId += 1;
+  return shellyMessageId;
+};
 
 const navItems = [
   { label: "Mission", href: "#mission" },
@@ -32,9 +39,54 @@ function ShellAwareHome() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeThreat, setActiveThreat] = useState(threats[0]);
   const [selectedActions, setSelectedActions] = useState(["reusables"]);
-  const [activePrompt, setActivePrompt] = useState(shellyPrompts[0]);
+  const [shellyMessages, setShellyMessages] = useState(() => [
+    {
+      id: nextShellyMessageId(),
+      role: "bot",
+      text: "Hi, I'm Shelly! Ask me anything about sea turtles and ocean conservation."
+    }
+  ]);
+  const [shellyInput, setShellyInput] = useState("");
+  const [shellySending, setShellySending] = useState(false);
+  const chatThreadRef = useRef(null);
 
   const pledgeProgress = Math.round((selectedActions.length / actions.length) * 100);
+
+  useEffect(() => {
+    const thread = chatThreadRef.current;
+    const lastMessage = thread?.lastElementChild;
+    if (thread && lastMessage) {
+      const paddingTop = parseFloat(getComputedStyle(thread).paddingTop) || 0;
+      const offsetWithinThread =
+        lastMessage.getBoundingClientRect().top - thread.getBoundingClientRect().top;
+      thread.scrollTop += offsetWithinThread - paddingTop;
+    }
+  }, [shellyMessages]);
+
+  const sendShellyMessage = async (text) => {
+    const trimmed = text.trim();
+    if (!trimmed || shellySending) return;
+
+    setShellyMessages((current) => [
+      ...current,
+      { id: nextShellyMessageId(), role: "user", text: trimmed }
+    ]);
+    setShellyInput("");
+    setShellySending(true);
+
+    const reply = await askShelly(trimmed);
+
+    setShellyMessages((current) => [
+      ...current,
+      { id: nextShellyMessageId(), role: "bot", text: reply }
+    ]);
+    setShellySending(false);
+  };
+
+  const handleShellySubmit = (event) => {
+    event.preventDefault();
+    sendShellyMessage(shellyInput);
+  };
 
   const toggleAction = (id) => {
     setSelectedActions((current) =>
@@ -311,19 +363,19 @@ function ShellAwareHome() {
 
         <section className="shelly-section" id="shelly" aria-labelledby="shelly-title">
           <div className="shelly-copy">
-            <p className="section-kicker">Shelly concept</p>
-            <h2 id="shelly-title">A future guide, previewed as an ocean research console.</h2>
+            <p className="section-kicker">Meet Shelly</p>
+            <h2 id="shelly-title">Ask Shelly about sea turtles and ocean conservation.</h2>
             <p>
-              Shelly is not active yet. This mock interface shows how visitors could ask simple
-              turtle conservation questions in a future version.
+              Shelly is a live guide focused on sea turtles and life below water. Try a quick
+              question below, or type your own.
             </p>
-            <div className="prompt-bank" aria-label="Shelly preview prompts">
+            <div className="prompt-bank" aria-label="Shelly quick-start prompts">
               {shellyPrompts.map((prompt) => (
                 <button
-                  className={activePrompt.id === prompt.id ? "is-active" : ""}
                   key={prompt.id}
                   type="button"
-                  onClick={() => setActivePrompt(prompt)}
+                  disabled={shellySending}
+                  onClick={() => sendShellyMessage(prompt.question)}
                 >
                   {prompt.question}
                 </button>
@@ -331,27 +383,42 @@ function ShellAwareHome() {
             </div>
           </div>
 
-          <div className="shelly-chat-container" aria-label="Shelly chatbot preview">
+          <div className="shelly-chat-container" aria-label="Shelly chatbot">
             <header>
               <span>
                 <Bot size={20} />
               </span>
               <div>
-                <strong>Shelly preview</strong>
-                <small>Prototype only / no live AI</small>
+                <strong>Shelly</strong>
+                <small>Live ocean conservation guide</small>
               </div>
             </header>
-            <div className="chat-thread">
-              <div className="chat-bubble bot-bubble">
-                Hi, I’m Shelly. Pick a sample question and I’ll show how this guide might respond.
-              </div>
-              <div className="chat-bubble user-bubble">{activePrompt.question}</div>
-              <div className="chat-bubble bot-bubble">{activePrompt.answer}</div>
+            <div className="chat-thread" ref={chatThreadRef}>
+              {shellyMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className={message.role === "user" ? "chat-bubble user-bubble" : "chat-bubble bot-bubble"}
+                >
+                  {message.text}
+                </div>
+              ))}
+              {shellySending && (
+                <div className="chat-bubble bot-bubble">Shelly is thinking…</div>
+              )}
             </div>
-            <div className="chat-input">
-              <span>Ask Shelly in a future version...</span>
-              <SendHorizonal size={18} />
-            </div>
+            <form className="chat-input" onSubmit={handleShellySubmit}>
+              <input
+                type="text"
+                value={shellyInput}
+                onChange={(event) => setShellyInput(event.target.value)}
+                placeholder="Ask Shelly about sea turtles..."
+                aria-label="Message to Shelly"
+                disabled={shellySending}
+              />
+              <button type="submit" aria-label="Send message to Shelly" disabled={shellySending || !shellyInput.trim()}>
+                <SendHorizonal size={18} />
+              </button>
+            </form>
           </div>
         </section>
 
